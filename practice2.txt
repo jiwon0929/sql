@@ -1,0 +1,230 @@
+HR@orcl>select last_name, salary
+  2  from employees
+  3  where salary>12000;
+
+LAST_NAME                     SALARY                                                                                    
+------------------------- ----------                                                                                    
+Hartstein                      13000                                                                                    
+King                           24000                                                                                    
+Kochhar                        17000                                                                                    
+De Haan                        17000                                                                                    
+
+HR@orcl>select last_name, department_id
+  2  from employees
+  3  where employee_id = 176;
+
+LAST_NAME                 DEPARTMENT_ID                                                                                 
+------------------------- -------------                                                                                 
+Taylor                               80                                                                                 
+
+HR@orcl>select last_name, salary
+  2  from employees
+  3  where salary not between 5000and 12000;
+
+LAST_NAME                     SALARY                                                                                    
+------------------------- ----------                                                                                    
+Whalen                          4400                                                                                    
+Hartstein                      13000                                                                                    
+King                           24000                                                                                    
+Kochhar                        17000                                                                                    
+De Haan                        17000                                                                                    
+Lorentz                         4200                                                                                    
+Rajs                            3500                                                                                    
+Davies                          3100                                                                                    
+Matos                           2600                                                                                    
+Vargas                          2500                                                                                    
+
+10 rows selected.
+
+HR@orcl>select last_name, job_id, hire_date
+  2  from employees
+  3  where last_name in ('Matos', 'Taylor')
+  4  order by hire_date;
+
+LAST_NAME                 JOB_ID     HIRE_DATE                                                                          
+------------------------- ---------- ---------                                                                          
+Matos                     ST_CLERK   15-MAR-98                                                                          
+Taylor                    SA_REP     24-MAR-98                                                                          
+
+HR@orcl>select last_name, department_id
+  2  from employees
+  3  where department_id in (20,50)
+  4  order by last_name
+  5  ;
+
+LAST_NAME                 DEPARTMENT_ID                                                                                 
+------------------------- -------------                                                                                 
+Davies                               50                                                                                 
+Fay                                  20                                                                                 
+Hartstein                            20                                                                                 
+Matos                                50                                                                                 
+Mourgos                              50                                                                                 
+Rajs                                 50                                                                                 
+Vargas                               50                                                                                 
+
+7 rows selected.
+
+HR@orcl>select last_name "Employee", salary "Monthly Salary"
+  2  from employees
+  3  where salary between 5000 and 12000;
+
+Employee                  Monthly Salary                                                                                
+------------------------- --------------                                                                                
+Fay                                 6000                                                                                
+Higgins                            12000                                                                                
+Gietz                               8300                                                                                
+Hunold                              9000                                                                                
+Ernst                               6000                                                                                
+Mourgos                             5800                                                                                
+Zlotkey                            10500                                                                                
+Abel                               11000                                                                                
+Taylor                              8600                                                                                
+Grant                               7000                                                                                
+
+10 rows selected.
+
+HR@orcl>ed
+Wrote file afiedt.buf
+
+  1  select last_name "Employee", salary "Monthly Salary"
+  2  from employees
+  3  where salary between 5000 and 12000
+  4* and department_id in(20,50)
+HR@orcl>/
+
+Employee                  Monthly Salary                                                                                
+------------------------- --------------                                                                                
+Fay                                 6000                                                                                
+Mourgos                             5800                                                                                
+
+HR@orcl>select last_name, hire_date
+  2  from employees
+  3  where hire_date like '%94';
+
+LAST_NAME                 HIRE_DATE                                                                                     
+------------------------- ---------                                                                                     
+Higgins                   07-JUN-94                                                                                     
+Gietz                     07-JUN-94                                                                                     
+
+HR@orcl>select last_name, job_id
+  2  from employees
+  3  where manager_id is null;
+
+LAST_NAME                 JOB_ID                                                                                        
+------------------------- ----------                                                                                    
+King                      AD_PRES                                                                                       
+
+HR@orcl>select last_name, salary, commission_pct
+  2  from employees
+  3  where commission_pct is no null
+  4  order by salary DESC, commission_pct DESC;
+where commission_pct is no null
+                        *
+ERROR at line 3:
+ORA-00908: missing NULL keyword 
+
+
+HR@orcl>ed
+Wrote file afiedt.buf
+
+  1  select last_name, salary, commission_pct
+  2  from employees
+  3  where commission_pct is not null
+  4* order by salary DESC, commission_pct DESC
+HR@orcl>/
+
+LAST_NAME                     SALARY COMMISSION_PCT                                                                     
+------------------------- ---------- --------------                                                                     
+Abel                           11000             .3                                                                     
+Zlotkey                        10500             .2                                                                     
+Taylor                          8600             .2                                                                     
+Grant                           7000            .15                                                                     
+
+HR@orcl>select last_name
+  2  from employees
+  3  where last_name like'__a%';
+
+LAST_NAME                                                                                                               
+-------------------------                                                                                               
+Grant                                                                                                                   
+Whalen                                                                                                                  
+
+HR@orcl>select last_name from employees
+  2  where last_nem like '%a'
+  3  and last_name like '%e%';
+where last_nem like '%a'
+      *
+ERROR at line 2:
+ORA-00904: "LAST_NEM": invalid identifier 
+
+
+HR@orcl>ed
+Wrote file afiedt.buf
+
+  1  select last_name from employees
+  2  where last_name like '%a%'
+  3* and last_name like '%e%'
+HR@orcl>/
+
+LAST_NAME                                                                                                               
+-------------------------                                                                                               
+Davies                                                                                                                  
+De Haan                                                                                                                 
+Hartstein                                                                                                               
+Whalen                                                                                                                  
+
+HR@orcl>select last_name, job_id, salary
+  2  from employees
+  3  where job_id in('SA_REP', 'ST_CLERK')
+  4  and salary not in (2500,3500,7000);
+
+LAST_NAME                 JOB_ID         SALARY                                                                         
+------------------------- ---------- ----------                                                                         
+Abel                      SA_REP          11000                                                                         
+Taylor                    SA_REP           8600                                                                         
+Davies                    ST_CLERK         3100                                                                         
+Matos                     ST_CLERK         2600                                                                         
+
+HR@orcl>select last_name "Employee", salary "Monthly Salary", commission_pct
+  2  from employees
+  3  where commission_pct = .20";
+ERROR:
+ORA-01756: quoted string not properly terminated 
+
+
+HR@orcl>ed
+Wrote file afiedt.buf
+
+  1  select last_name "Employee", salary "Monthly Salary", commission_pct
+  2  from employees
+  3* where commission_pct = 20"
+HR@orcl>/
+ERROR:
+ORA-01756: quoted string not properly terminated 
+
+
+HR@orcl>ed
+Wrote file afiedt.buf
+
+  1  select last_name as "Employee", salary as "Monthly Salary", commission_pct
+  2  from employees
+  3* where commission_pct =.20"
+HR@orcl>/
+ERROR:
+ORA-01756: quoted string not properly terminated 
+
+
+HR@orcl>ed
+Wrote file afiedt.buf
+
+  1  select last_name as "Employee", salary as "Monthly Salary", commission_pct
+  2  from employees
+  3* where commission_pct =.20
+HR@orcl>/
+
+Employee                  Monthly Salary COMMISSION_PCT                                                                 
+------------------------- -------------- --------------                                                                 
+Zlotkey                            10500             .2                                                                 
+Taylor                              8600             .2                                                                 
+
+HR@orcl>spool off
